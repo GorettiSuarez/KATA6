@@ -11,14 +11,33 @@ public class KATA6 {
     public static void main(String[] args) throws IOException, FileNotFoundException, ClassNotFoundException, SQLException {
         
         String nameFile = "C:\\Users\\Goretti\\Documents\\NetBeansProjects\\KATA6\\DATA\\emailsfilev1.txt";
-        ArrayList<String> mailArray = MailListReader.read(nameFile);
+        ArrayList<Person> mailArray = MailListReader.read(nameFile);
+        
+        HistogramBuilder <Person> builder = new HistogramBuilder<>(mailArray);
+        
+        //Se realizaran dos histogramas: 1 de tipo string y otro de character
+        
+        Histogram<String> domains = builder.build(new Attribute<Person, String>() {
 
-        //ArrayList<String> mailArray = MailListReaderDDBB.read();
-        //System.out.println(mailArray.size());
+            @Override
+            //Aqui si hace falta cambiar el tipo generico a String para definirlo.
+            //Aqui se está implementando la interface.
+            public String get(Person item) {
+                return item.getMail().split("@")[1];
+            }
+        });
         
-        Histogram<String> histogram = MailHistogramBuilder.buil(mailArray);
+        Histogram<Character> letters = builder.build(new Attribute<Person, Character>() {
+
+            @Override
+            //Aqui si hace falta cambiar el tipo generico a String para definirlo.
+            //Aqui se está implementando la interface.
+            public Character get(Person item) {
+                return item.getMail().charAt(0);
+            }
+        });
         
-        
-        new HistogramDisplay(histogram).execute();
+        new HistogramDisplay(domains, "DOMINIOS").execute();
+        new HistogramDisplay(letters, "CARACTER").execute();
     }
 }

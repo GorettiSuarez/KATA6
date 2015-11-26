@@ -12,14 +12,18 @@ import java.util.ArrayList;
  * @author Goretti
  */
 public class MailListReader {
-    public static ArrayList<String> read (String name) throws FileNotFoundException, IOException {
-        ArrayList<String> mailList = new ArrayList<>();
+    public static ArrayList<Person> read (String name) throws FileNotFoundException, IOException {
+        ArrayList<Person> mailList = new ArrayList<>();
         
         BufferedReader fileRead = new BufferedReader(new FileReader(new File(name)));
+        
         String mail;
+        Integer id = 0 ;
+        
         while((mail = fileRead.readLine())!=null){
             if (!mail.contains("@")) continue;
-            mailList.add(mail);
+            //mailList.add(mail);
+            mailList.add(new Person(id++, mail));
         }
         
         return mailList;
