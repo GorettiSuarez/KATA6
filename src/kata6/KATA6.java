@@ -37,7 +37,45 @@ public class KATA6 {
             }
         });
         
+        //Creamos una lista y un builder nuevo que lea de la base de datos, para no borrar nada
+        ArrayList<Person1> person = PersonLoader.read();
+        HistogramBuilder<Person1> builder1 = new HistogramBuilder<>(person);
+        
+        //En este caso la A es tipo String porque son los emails
+        Histogram<String> domains1 = builder1.build(new Attribute<Person1, String>() {
+
+            @Override
+            public String get(Person1 item) {
+                return item.getMail().split("@")[1];
+            }
+        });
+        
+        //En este caso la A es tipo Float porque son los pesos
+        Histogram<Float> pesos = builder1.build(new Attribute<Person1, Float>() {
+
+            @Override
+            public Float get(Person1 item) {
+                return item.getPeso();
+            }
+        });
+        
+        
+        //En este caso la A es tipo Character porque son los generos y nos quedmaos con 
+        //la primera letra. Eso es suficiente
+        Histogram<Character> generos = builder1.build(new Attribute<Person1, Character>() {
+
+            @Override
+            public Character get(Person1 item) {
+                return item.getGenero().charAt(0);
+            }
+        });
+        
+        
+        
         new HistogramDisplay(domains, "DOMINIOS").execute();
         new HistogramDisplay(letters, "CARACTER").execute();
+        new HistogramDisplay(domains1, "DOMINIOS").execute();
+        new HistogramDisplay(pesos, "PESOS").execute();
+        new HistogramDisplay(generos, "GENEROS").execute();
     }
 }
